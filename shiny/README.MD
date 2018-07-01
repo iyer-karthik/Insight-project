@@ -1,2 +1,1 @@
-This repository contains the R scripts to generate a Shiny app, which accomplishes a thorough explanatory analysis 
-of historical Lending Club loans.
+This repository contains the R scripts to generate a R Shiny [dashboard](https://puzzle-toad.shinyapps.io/peer_to_peer_lending/), which accomplishes a thorough explanatory analysis of historical data from Lending Club.
