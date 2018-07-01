@@ -6,6 +6,7 @@ library(tm)
 library(wordcloud)
 library(zoo)
 
+# Initial data aggregation and basic cleaning
 # Load data
 #--------------------------------------------------------------------
 # Data from 2007-2011
