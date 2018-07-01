@@ -39,40 +39,30 @@ BASE_TOL = 1e-12
 def better_irr_newton(my_list, tol=BASE_TOL):
     
     ''' 
-    Compute the internal rate of return. This is the “average” periodically 
-    compounded rate of return that gives a net present value of 0.0; Uses
-    Newton Raphson. 
+    Compute the internal rate of return. This is the “average” 
+    periodically compounded rate of return that gives a net 
+    present value of 0.0; Uses Newton Raphson. 
     
     Parameters:	
     my_list : array_like, shape(N,)
 
-    Input cash flows per time period. By convention, net “deposits” are 
-    negative and net “withdrawals” are positive. Thus, for example, at least 
-    the first element of values, which represents the initial investment, 
-    will typically be negative.
-
     Returns:	
     out : float
     
-    Examples
-
-    1. round(better_irr_newton([-100, 39, 59, 55, 20]), 5)
-           0.28095
-    2. round(better_irr_newton([-100, 0, 0, 74]), 5)
-          -0.0955 
-    ''' 
-          
+    '''    
     rate = 0.0
     for steps in range(50):
         r = np.arange(len(my_list))
-        # Factor exp(m) out of the numerator & denominator for numerical stability
+        # Factor exp(m) out of the numerator & denominator for 
+        # numerical stability
         m = max(-rate * r)
         f = np.exp(-rate * r - m)
         t = np.dot(f, my_list)
         if abs(t) < tol * math.exp(-m):
             break
         u = np.dot(f * r, my_list)
-        # Clip the update to prevent jumping into region of numerical instability
+        # Clip the update to prevent jumping into region of 
+        # numerical instability
         rate = rate + np.clip(t / u, -1.0, 1.0)
 
     return math.exp(rate) - 1
