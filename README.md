@@ -14,7 +14,7 @@ Using the predicted time to default, an investment strategy was constructed to s
 
 The project comprised of four parts:
 
-*Exploratory analysis* of historical data from Lending Club from 2007-2017. I deployed a R Shiny [dashboard](https://puzzle-toad.shinyapps.io/peer_to_peer_lending/) for a visual exploration of Lending Club data. (Detailed code [here](https://github.com/iyer-karthik/Insight-project/tree/master/shiny) and [here](https://github.com/iyer-karthik/Insight-project/blob/master/EDA.ipynb)). One thing stood out: The growth of the platform itself, measured in terms of amount of money disbursed. 
+**Exploratory analysis** of historical data from Lending Club from 2007-2017. I deployed a R Shiny [dashboard](https://puzzle-toad.shinyapps.io/peer_to_peer_lending/) for a visual exploration of Lending Club data. (Detailed code [here](https://github.com/iyer-karthik/Insight-project/tree/master/shiny) and [here](https://github.com/iyer-karthik/Insight-project/blob/master/EDA.ipynb)). One thing stood out: The growth of the platform itself, measured in terms of amount of money disbursed. 
 
 ![LC growth](images/LC_growth.png)
 
@@ -29,8 +29,8 @@ A disadvantage of classification techniques is that they do not take the timing 
 
 ![Survival](images/survival_curve_random_loan.png)
 
-**Investment strategy**
-Using the probability of survival allows us to compute expected lifetime which can be used to compute expected returns. Here is a code snippet which computes internal rate of return, which can then be used to compute the annual expected return. 
+**Investment strategy**:
+Using the probability of survival allows us to compute expected lifetime which can be used to compute expected returns. For instance, here is a code snippet which computes internal rate of return, which can then be used to compute the annual expected return. 
 
 ```python
 MAX_LOG_RATE = 1e3
@@ -39,9 +39,10 @@ BASE_TOL = 1e-12
 def better_irr_newton(my_list, tol=BASE_TOL):
     
     ''' 
-    Compute the internal rate of return. This is the “average” 
-    periodically compounded rate of return that gives a net 
-    present value of 0.0; Uses Newton Raphson. 
+    Compute the internal rate of return. This is the 
+    “average” periodically compounded rate of return 
+    that gives a net present value of 0.0; 
+    Uses Newton Raphson. 
     
     Parameters:	
     my_list : array_like, shape(N,)
@@ -53,32 +54,44 @@ def better_irr_newton(my_list, tol=BASE_TOL):
     rate = 0.0
     for steps in range(50):
         r = np.arange(len(my_list))
-        # Factor exp(m) out of the numerator & denominator for 
-        # numerical stability
+        # Factor exp(m) out of the numerator 
+        # & denominator for  numerical stability
         m = max(-rate * r)
         f = np.exp(-rate * r - m)
         t = np.dot(f, my_list)
         if abs(t) < tol * math.exp(-m):
             break
         u = np.dot(f * r, my_list)
-        # Clip the update to prevent jumping into region of 
-        # numerical instability
+        # Clip the update to prevent jumping into 
+        # region of numerical instability
         rate = rate + np.clip(t / u, -1.0, 1.0)
 
     return math.exp(rate) - 1
 ```
-*The investment strategy is to invest only in top performing loans, where performance is measured by expected returns.* As a way to validate the strategy, we then rank all loans by their expected return, bin them in to top 20 %, 20-40 % and so on, and then compare the results 
+What does all of give us? It gives a way to rank all the loans. *The investment strategy is to invest only in top performing loans, where performance is measured by expected returns.* As a way to validate the strategy, we then rank all loans by their expected return, bin them in to top 20 %, 20-40 % and so on, and then compare the results 
 to observed returns. 
 
-Here is a comparison of the average expected return and average observed return in each bin. As we can see, 
-this strategy performs well and picks out the top performing loans. 
+Here is a comparison of the average expected return and average observed return in each bin. This strategy performs well on back-test and picks out the top performing loans. 
 
-![performance](images/final_expected_return_plot-bell.jpg)
+![performance](images/final_expected_return_plot-bicubic.png)
+
+### Insights
+Here are some key insights
+- Loan-to-income ratio is the top predictor of loan default. A higher loan-to-income ratio corresponds to a smaller number of 
+payments. 
+- Loan description is a good predictor of loan default, especially description polarity.
+- Loan purpose plays a role in default outcome. Wedding loans have a tendency to be paid off while loans for small businesses have a
+greater tendency to default.
+- Surprisngly, the number of tax liens is inversely associated with default.
+
+### Use case
+Once the model parameters have been determined using survival analysis, calculating expected returns is straightforward and can be done in real-time when new investment opportunities arise. An investor looking in to Lending club loans has access to features which go in to the model. Computing the expected returns gives her a way to rank the loans and choose only the top performing loans
+
 
 ### Summary 
  Here is a summary of work accomplished over the last 3 weeks
 - Deployed a R Shiny dashboard visualizing the historical trends in Lending Club loan data
 - Used classfication techniques to predict whether a loan will default
 - Used survival analysis techniques to predict time to default and constructed an investment strategy off that
-- Provided actionable insights that will help in optimal loan selection
+- Provided actionable insights for optimal loan selection
 
