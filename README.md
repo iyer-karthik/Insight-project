@@ -1,6 +1,6 @@
 ## Introduction
 
-This page contains a brief description of my Insight Data Science project completed in 3 weeks. For this project, I considered peer-to-peer lending, which is method of financing that allows people to borrow or lend money without a bank. As a part of the project, I looked at approved loan data from [Lending Club](https://www.lendingclub.com/info/download-data.action), one of the biggest online lending platforms. The goal of my project was to improve returns for Lending club investors. 
+This page contains a brief description of my Insight Data Science project completed in 3 weeks. For this project, I considered peer-to-peer lending, which is a method of financing that allows people to borrow or lend money without a bank. As a part of the project, I looked at approved loan data from [Lending Club](https://www.lendingclub.com/info/download-data.action), one of the biggest online lending platforms. The goal of my project was to improve returns for Lending club investors. 
 
 ### Overview
 One way to improve returns is by reliably predicting loan default. I approached the problem of prediciting loan default in two ways. One was to look at it as a supervised classfication problem that predicts whether a given loan will default. The aim here was to filter 
@@ -14,7 +14,7 @@ Using the predicted time to default, an investment strategy was constructed to s
 
 The project comprised of four parts:
 
-**Exploratory analysis** of historical data from Lending Club from 2007-2017. I deployed a R Shiny [dashboard](https://puzzle-toad.shinyapps.io/peer_to_peer_lending/) for a visual exploration of Lending Club data. (Detailed code [here](https://github.com/iyer-karthik/Insight-project/tree/master/shiny) and [here](https://github.com/iyer-karthik/Insight-project/blob/master/EDA.ipynb)). One thing stood out: The growth of the platform itself, measured in terms of amount of money disbursed. 
+**Exploratory analysis** of historical data from Lending Club from 2007-2017. I deployed a R Shiny [dashboard](https://puzzle-toad.shinyapps.io/peer_to_peer_lending/) for a visual exploration of Lending Club data. (Detailed code [here](https://github.com/iyer-karthik/Insight-project/tree/master/shiny) and [here](https://github.com/iyer-karthik/Insight-project/blob/master/EDA.ipynb)). One thing stood out: The growth of the platform itself, measured in terms of amount of money disbursed. (
 
 ![LC growth](images/LC_growth.png)
 
