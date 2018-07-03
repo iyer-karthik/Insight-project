@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 """
+Script for computing expected returns and comparing the performance of the 
+investment strategy
 """
 import pandas as pd
 import numpy as np 
 import math
-from plotly.offline import download_plotlyjs, init_notebook_mode,  plot
+from plotly.offline import download_plotlyjs, init_notebook_mode, plot
 init_notebook_mode()
-
-## Code for computing expected returns and comparing the performance of the 
-## investment strategy
 
 MAX_LOG_RATE = 1e3
 BASE_TOL = 1e-12
@@ -43,11 +42,12 @@ def better_irr_newton(my_list, tol=BASE_TOL):
         r = np.arange(len(my_list))
         # Factor exp(m) out of the numerator & denominator for numerical stability
         m = max(-rate * r)
-        f = np.exp(-rate * r - m)
-        t = np.dot(f, my_list)
+        factor = np.exp(-rate * r - m)
+        
+        t = np.dot(factor, my_list)
         if abs(t) < tol * math.exp(-m):
             break
-        u = np.dot(f * r, my_list)
+        u = np.dot(factor * r, my_list)
         # Clip the update to prevent jumping into region of numerical instability
         rate = rate + np.clip(t / u, -1.0, 1.0)
 
@@ -58,7 +58,7 @@ def compute_expected_return(df):
     ''' Compute the annual expected return.
     
     Parameters:	
-    df : dataframe
+    df : pandas dataframe
     
     Use expected number of payments, monthly installments and funded amount 
     information from the dataaframe to compute the expected returns
@@ -67,13 +67,35 @@ def compute_expected_return(df):
     annual_exp_return : numpy array'''
     
     monthly_return = np.zeros(len(df))
-    for i in range(len(df)):
-        installment_array = df.iloc[i]['installment']*np.ones(df.iloc[i]['expected_number_of_payments'])
-        xx = np.insert(installment_array, 0, -df.iloc[i]['funded_amnt'], 
-                       axis=0)
-        monthly_return[i] = better_irr_newton(xx)
+    for row in range(len(df)):
+        
+        installment_array = (df.iloc[row]['installment'])\
+        *np.ones(df.iloc[row]['expected_number_of_payments'])
+        
+        cashflow_array = np.insert(installment_array, 0, 
+                                   -df.iloc[row]['funded_amnt'], 
+                                   axis=0)
+        monthly_return[row] = better_irr_newton(cashflow_array)
+        
     annual_return = (1 + monthly_return)**12 - 1
     return annual_return
+
+def compute_observed_return(df):
+    
+    ''' Compute the annual observed return.
+    
+    Parameters:	
+    df : pandas dataframe
+    
+    Use total payment, funded amount and time to compute expected returns
+    
+    Returns:	
+    observed_returns : numpy array'''
+    
+    df['returns'] = (df['total_pymnt'] - df['funded_amnt'])/df['funded_amnt']
+    observed_returns = (1 + df['returns'])**(12/df.time) - 1
+    return observed_returns
+    
     
 def plot_results(df):
     
@@ -87,9 +109,6 @@ def plot_results(df):
      return. Also compute the mean default rate for each bin, and plot 
      the results.'''
      
-     # First compute the annual observed returns
-     df['returns'] = (df['total_pymnt'] - df['funded_amnt'])/df['funded_amnt']
-     df['observed_returns'] = (1 + df['returns'])**(12/df.time) - 1
      
      # Compare returns
      df_sorted = df.sort_values(by='expected_returns', ascending=False)
@@ -104,7 +123,7 @@ def plot_results(df):
          avg_expected_return.append(df_sorted_split[i]["expected_returns"].median())
          avg_observed_return.append(df_sorted_split[i]["observed_returns"].median())
          # Mean gives infinity values. An issue with numpy. Lets replace it by median.
-         #avg_observed_return.append(df_sorted_split[i]['observed_returns'].mean())
+         # avg_observed_return.append(df_sorted_split[i]['observed_returns'].mean())
          avg_default_rate.append(df_sorted_split[i]["status"].mean())
          
      print(avg_expected_return)
@@ -114,6 +133,7 @@ def plot_results(df):
      print(avg_default_rate)
     
      # Plotting
+     
      # First Create a dataframe of avg expected return and avg observed return
      col_names =  ['Average Expected Return']
      my_df  = pd.DataFrame(columns = col_names)
@@ -135,7 +155,6 @@ def plot_results(df):
             y=my_df['Average Observed Return'].values,
             name='Average Observed Return',
             marker=dict(
-        #color='rgb(204,204,204)',
         color='rgb(191, 13, 13)'))
     
 
@@ -149,11 +168,13 @@ def plot_results(df):
                               )
 
      fig = Figure(data=data, layout=layout)
-     plot(fig, filename='angled-text-bar.html')
+     plot(fig, filename='performance-comparison.html')
      return None
     
     
 if __name__ == '__main__':
     df = pd.read_pickle('agg_data/df_survival.pkl')
+    # Compute expected and observed returns
     df['expected_returns'] = compute_expected_return(df)
+    df['observed_returns'] = compute_observed_return(df)
     plot_results(df)
