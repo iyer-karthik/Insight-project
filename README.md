@@ -1,4 +1,5 @@
 
+Author: [**Karthik Iyer**](https://iyer-karthik.github.io/)
 ## Motivation
 When I was first looking for a project to work on for Insight, I considered a few variations of stock market prediction using machine 
 learning techniques. What I didn't know that time was that such projects were fairly common and that predicting any sort of price forecast is an exceptionally challenging problem and [not fundamentally feasible](https://www.investopedia.com/terms/e/efficientmarkethypothesis.asp). I wanted to work on a finance related project and someone suggested that I look in [peer-to-peer lending](https://en.wikipedia.org/wiki/Peer-to-peer_lending). I had never heard of it before but after a day of reading, got immediately hooked and decided to work on project related to peer-to-peer lending. The project would be finance related, there were many data science techniques one could use to tackle important problems in that space, the problems clearly stemmed from a business need and finally, it would be fun to work in a completely new field. This checked all boxes that I wanted for a project!
@@ -15,7 +16,7 @@ In spite of the lending platforms' efforts to screen out high risk borrowers, a 
 ## Data <a id='data'></a>
 I looked at loan data from [Lending Club](https://www.lendingclub.com/info/download-data.action), one of the biggest online lending latforms in the United States. The dataset I used for training my models had over 300000 rows (loans) and each row contained information about a loan (purpose, amount, interest rate, credit history of the borrower) and all completed loans contain information about the status of the loan (Paid off or Defaulted). The goal of my project was to improve returns for Lending club investors. 
 
-### Overview <a id='overview'></a>
+## Overview <a id='overview'></a>
 One way to improve returns is by reliably predicting loan default. I approached the problem of prediciting loan default in two ways. One was to look at it as a supervised classfication problem that predicts whether a given loan will default. The aim here was to filter 
 out as many bad loans as possible. With that in mind, I used a few parameteric and non-parametric classfiers and optimized for *recall*. 
 
@@ -23,7 +24,7 @@ This binary approach does not bode particularly well for maximizing returns and 
 
 Using the predicted time to default, an investment strategy was constructed to select optimal loans and was tested with unseen data. I used a combination of R and Python for my analysis. 
 
-### Workflow
+## Workflow
 
 The project comprised of four parts:
 
@@ -97,7 +98,7 @@ Here is a comparison of the average expected return and average observed return 
 
 This strategy performs well on back-test and picks out the top performing loans. 
 
-### Insights <a id='insights'></a>
+## Insights <a id='insights'></a>
 Classification and survival analysis models also output factors most indicative of default. Here are some key insights:
 - Loan-to-income ratio is the top predictor of loan default. A higher loan-to-income ratio corresponds to a smaller number of 
 payments. 
@@ -106,11 +107,11 @@ payments.
 greater tendency to default.
 - Surprisngly, the number of tax liens is inversely associated with default.
 
-### Use case <a id='usecase'></a>
+## Use case <a id='usecase'></a>
 Once the model parameters have been determined using survival analysis, calculating expected returns is straightforward and can be done in real-time when new investment opportunities arise. An investor looking in to Lending club loans has access to features which go in to the model. Computing the expected returns gives her a way to rank the loans and choose only the top performing loans.
 
 
-### Summary <a id='summary'></a>
+## Summary <a id='summary'></a>
  Here is a summary of work accomplished over the last 3 weeks:
 - Deployed a R Shiny dashboard visualizing the historical trends in Lending Club loan data
 - Used classfication techniques to predict whether a loan will default
