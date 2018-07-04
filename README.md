@@ -3,16 +3,6 @@
 When I was first looking for a project to work on for Insight, I considered a few variations of stock market prediction using machine 
 learning techniques. What I didn't know that time was that such projects were fairly common and that predicting any sort of price forecast is an exceptionally challenging problem and [not fundamentally feasible](https://www.investopedia.com/terms/e/efficientmarkethypothesis.asp). I wanted to work on a finance related project and someone suggested that I look in [peer-to-peer lending](https://en.wikipedia.org/wiki/Peer-to-peer_lending). I had never heard of it before but after a day of reading, got immediately hooked and decided to work on project related to peer-to-peer lending. The project would be finance related, there were many data science techniques one could use to tackle important problems in that space, the problems clearly stemmed from a business need and finally, it would be fun to work in a completely new field. This checked all boxes that I wanted for a project!
 
-## Table of contents 
-## [Introduction](#motivation)
-## [Need](#need)
-## [Data](#data)
-## [Overview](#overview)
-## [Insights](#insights)
-## [Use case](#usecase)
-## [Summary](#summary)
-
-
 ## What is peer-to-peer lending? <a id='motivation'></a>
 
 Peer-to-peer lending is a way for individual investors to lend money directly to borrowers. The peer-to-peer lending industry seeks to create a market where investors (individuals or institutions) can buy loans directly from the originator, without the need of a banking intermediary. A low-cost operating model for peer-to-peer lending platforms allows for lower rates for borrowers as well as solid returns for investors. 
