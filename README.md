@@ -22,7 +22,7 @@ out as many bad loans as possible. With that in mind, I used a few parameteric a
 
 This binary approach does not bode particularly well for maximizing returns and such analysis has been done before for Lending Club's data. For example, a high interest loan defaulting near the end of the term and a low interest loan defaulting near the beginning of the term will have different returns, and will be binned in the same category by the binary classifer. A more satisfactory approach is to predict the time to default. This was done using survival analysis. 
 
-Using the predicted time to default, an investment strategy was constructed to select optimal loans and was tested with unseen data. I used a combination of R and Python for my analysis. 
+Using the predicted time to default, a lending strategy was constructed to select optimal loans and was tested with unseen data. I used a combination of R (dplyr, Shiny, ggplot) and Python (pandas, scikit-learn, lifelines, seaborn) for my analysis. 
 
 ## Workflow
 
@@ -30,15 +30,16 @@ The project comprised of four parts:
 
 **Exploratory analysis of historical data from Lending Club from 2007-2017**. I deployed a R Shiny [dashboard](https://puzzle-toad.shinyapps.io/peer_to_peer_lending/) for a visual exploration of historical Lending Club data. (Detailed code [here](https://github.com/iyer-karthik/Insight-project/tree/master/shiny) and [here](https://github.com/iyer-karthik/Insight-project/blob/master/EDA.ipynb)). One thing stood out: The growth of the platform itself, measured in terms of amount of money disbursed.
 
-![LC growth](images/LC_growth.png)
+![LC growth](images/Modified_LC_growth.png)
 
+Previous analyses for Lending Club analyses did not consider loan description. On Lending Club, borrowers give a brief description of loan purpose. Using TextBlob, I extracted the polarity and subjectivity of each loan description, and also looked at the number of words and total number of characters for each loan. Such features could potentially be indicators of future behavior and hence I decided to use these features for modeling.
 
 **Supervised binary classification**:
-With the aim of improving returns, the first technique I used was a supervised binary classification; predict whether a given loan will default or not. The idea was to improve returns by avoiding bad loans. I used a few parametric and non-parametric classifiers and optimized for recall. Logistic regression with L2 penalty had the best ROC-AUC. 
+With the aim of improving returns, the first technique I used was a supervised binary classification; predict whether a given loan will default or not. The idea was to improve returns by avoiding bad loans. I used a few parametric and non-parametric classifiers and optimized for recall. 
 
-Here is the ROC curve for different classifiers. 
+Logistic ridge regression had the best performance. Here is the confusion matrix for Logistic regression with L2 penalty.
 
-![ROCcurve](images/roc_final.png)
+![ROCcurve](images/Modified_confusion2.png)
 
 This solved the problem (avoid all loans which are predicted to default and increase returns), but the solution is not too satisfactory. 
 
@@ -48,9 +49,11 @@ A disadvantage of classification techniques is that they do not take the timing 
 
 Here is the output for a random loan whose maturity period is 36 months.
 
-![Survival](images/survival_curve_random_loan.png)
+![Survival](images/odified_survival_curve_random_loan.png.png)
 
-*Using the probability of survival allows us to compute expected lifetime which can be used to compute expected returns*. For instance, this is a code snippet which computes internal rate of return which can then be used to compute the annual expected return. 
+*Using the probability of survival allows us to compute expected lifetime which can be used to calculate expected returns*. 
+
+For instance, this is a code snippet which computes internal rate of return which can be used to calculate the annual expected return. 
 
 ```python
 MAX_LOG_RATE = 1e3
@@ -87,14 +90,18 @@ def better_irr_newton(my_list, tol=BASE_TOL):
 
     return math.exp(rate) - 1
 ```
-**Investment strategy**:
-What does all of give us? It gives a way to rank all the loans. *The investment strategy is to invest only in top performing loans, where performance is measured by expected returns.* As a way to validate the strategy, we then rank all loans in the test set by their expected returns, bin them in to top 20 %, 20-40 % and so on, and then compare the results in each bin to actual observed returns.
+**Lending strategy**:
+What does all of give us? 
 
-The idea sounds simple enough. Let's test the robustness of the strategy! 
+*It gives a way to rank all the loans. The lending strategy is to invest only in top performing loans, where performance is measured by expected returns.*
+
+As a way to validate the strategy, I ranked all loans in the test set by their expected returns, bined them in to top 20 %, 20-40 % and so on, and then compared the results in each bin to actual observed returns.
+
+The idea sounds simple enough. Let's test the robustness of the strategy. A good model should show similar trends for observed and expected returns in each category.
 
 Here is a comparison of the average expected return and average observed return in each bin. 
 
-![performance](images/final_expected_return_plot-bicubic.png)
+![performance](images/Modified_final_expected_return_plot.png)
 
 This strategy performs well on back-test and picks out the top performing loans. 
 
@@ -117,4 +124,11 @@ Once the model parameters have been determined using survival analysis, calculat
 - Used classfication techniques to predict whether a loan will default
 - Used survival analysis techniques to predict time to default and constructed an investment strategy off that
 - Provided actionable insights for optimal loan selection
+
+## Future considerations <a id='future'></a>
+I was happy with the performance of the model in that it did give access to top performing loans. Here are some key things which I would like to work on in the future.
+- Performance of loans in peer-to-peer lending is tied to the national economy as a whole. To get a better sense of *future* behaviour of borrowers, more macroeconomic features like unemployment rate, inflation forecasts should be added. 
+- Geographical location also matters. To get a more accurate prediction, it is worth spending time adding state-wide forecasts in to the models
+- Walk forward analysis should be used to stress test the strategy
+
 
