@@ -49,7 +49,7 @@ A disadvantage of classification techniques is that they do not take the timing 
 
 Here is the output for a random loan whose maturity period is 36 months.
 
-![Survival](images/odified_survival_curve_random_loan.png.png)
+![Survival](images/Modified_survival_curve_random_loan.png)
 
 *Using the probability of survival allows us to compute expected lifetime which can be used to calculate expected returns*. 
 
@@ -77,7 +77,8 @@ def better_irr_newton(my_list, tol=BASE_TOL):
    rate = 0.0
     for steps in range(50):
         r = np.arange(len(my_list))
-        # Factor exp(m) out of the numerator & denominator for numerical stability
+        # Factor exp(m) out of the numerator & denominator 
+        # for numerical stability
         m = max(-rate * r)
         factor = np.exp(-rate * r - m)
         
@@ -85,7 +86,8 @@ def better_irr_newton(my_list, tol=BASE_TOL):
         if abs(t) < tol * math.exp(-m):
             break
         u = np.dot(factor * r, my_list)
-        # Clip the update to prevent jumping into region of numerical instability
+        # Clip the update to prevent jumping into region 
+        # of numerical instability
         rate = rate + np.clip(t / u, -1.0, 1.0)
 
     return math.exp(rate) - 1
