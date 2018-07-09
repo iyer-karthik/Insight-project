@@ -131,6 +131,7 @@ Once the model parameters have been determined using survival analysis, calculat
 I was happy with the performance of the model in that it did give access to top performing loans. Here are some key things which I would like to work on in the future.
 - Performance of loans in peer-to-peer lending is tied to the national economy as a whole. To get a better sense of *future* behaviour of borrowers, more macroeconomic features like unemployment rate, inflation forecasts should be added. 
 - Geographical location also matters. To get a more accurate prediction, it is worth spending time adding state-wide forecasts in to the models.
+- Cox proportional hazard model assumes time independent co-variates. More advanced models with time dependent co-variates should be considered. 
 - Walk forward analysis should be used to stress test the strategy.
 
 
