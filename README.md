@@ -93,22 +93,22 @@ def better_irr_newton(my_list, tol=BASE_TOL):
     return math.exp(rate) - 1
 ```
 **Lending strategy**:
-What does all of give us? 
+What does all of this give us? 
 
 *It gives a way to rank all the loans. The lending strategy is to invest only in top performing loans, where performance is measured by expected returns.*
 
-As a way to validate the strategy, I ranked all loans in the test set by their expected returns, bined them in to top 20 %, 20-40 % and so on, and then compared the results in each bin to actual observed returns.
+As a way to validate the strategy, I ranked all loans in the test set by their expected returns, binned them in to top 20 %, 20-40 % and so on, and then compared the results in each bin to actual observed returns.
 
-The idea sounds simple enough. Let's test the robustness of the strategy. A good model should show similar trends for observed and expected returns in each category.
+A good model should show similar trends for observed and expected returns in each category. Let's test the robustness of the strategy.
 
 Here is a comparison of the average expected return and average observed return in each bin. 
 
 ![performance](images/Modified_final_expected_return_plot.png)
 
-This strategy performs well on back-test and picks out the top performing loans. 
+This strategy performs well on back-test and picks out the top performing loans. Loans that are expected to perform well do perform well and loans that are expected to perform worse do perform worse. 
 
 ## Insights <a id='insights'></a>
-Classification and survival analysis models also output factors most indicative of default. Here are some key insights:
+Classification and survival analysis models also output factors most indicative of default. Here are some key insights from my analysis:
 - Loan-to-income ratio is the top predictor of loan default. A higher loan-to-income ratio corresponds to a smaller number of 
 payments. 
 - Loan description is a good predictor of loan default, especially description polarity.
@@ -130,7 +130,7 @@ Once the model parameters have been determined using survival analysis, calculat
 ## Future considerations <a id='future'></a>
 I was happy with the performance of the model in that it did give access to top performing loans. Here are some key things which I would like to work on in the future.
 - Performance of loans in peer-to-peer lending is tied to the national economy as a whole. To get a better sense of *future* behaviour of borrowers, more macroeconomic features like unemployment rate, inflation forecasts should be added. 
-- Geographical location also matters. To get a more accurate prediction, it is worth spending time adding state-wide forecasts in to the models
-- Walk forward analysis should be used to stress test the strategy
+- Geographical location also matters. To get a more accurate prediction, it is worth spending time adding state-wide forecasts in to the models.
+- Walk forward analysis should be used to stress test the strategy.
 
 
