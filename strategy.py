@@ -120,10 +120,8 @@ def plot_results(df):
      avg_default_rate = []
      
      for i in range(len(df_sorted_split)):
-         avg_expected_return.append(df_sorted_split[i]["expected_returns"].median())
-         avg_observed_return.append(df_sorted_split[i]["observed_returns"].median())
-         # Mean gives infinity values. An issue with numpy. Lets replace it by median.
-         # avg_observed_return.append(df_sorted_split[i]['observed_returns'].mean())
+         avg_expected_return.append(df_sorted_split[i]["expected_returns"].mean())
+         avg_observed_return.append(df_sorted_split[i]["observed_returns"].mean())
          avg_default_rate.append(df_sorted_split[i]["status"].mean())
          
      print(avg_expected_return)
