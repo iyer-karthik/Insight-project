@@ -32,7 +32,7 @@ The project comprised of four parts:
 
 ![LC growth](images/Modified_LC_growth.png)
 
-Previous analyses for Lending Club analyses did not consider loan description. On Lending Club, borrowers give a brief description of loan purpose. Using TextBlob, I extracted the polarity and subjectivity of each loan description, and also looked at the number of words and total number of characters for each loan. Such features could potentially be indicators of future behavior and hence I decided to use these features for modeling.
+Previous analyses for Lending Club analyses did not consider loan description. On Lending Club, borrowers give a brief description of loan purpose. Using TextBlob, I extracted the polarity and subjectivity of each loan description, and also looked at the number of words and total number of characters for each loan. Such features could potentially be indicators of future behavior of a borrower and I hence decided to use these features for modeling.
 
 **Supervised binary classification**:
 With the aim of improving returns, the first technique I used was a supervised binary classification; predict whether a given loan will default or not. The idea was to improve returns by avoiding bad loans. I used a few parametric and non-parametric classifiers and optimized for recall. 
@@ -51,9 +51,9 @@ Here is the output for a random loan whose maturity period is 36 months.
 
 ![Survival](images/Modified_survival_curve_random_loan.png)
 
-*Using the probability of survival allows us to compute expected lifetime which can be used to calculate expected returns*. 
+*Using the probability of survival allows us to compute expected number of payments which can be used to calculate expected returns*. 
 
-For instance, this is a code snippet which computes internal rate of return which can be used to calculate the annual expected return. 
+For instance, this is a code snippet which computes internal rate of return. 
 
 ```python
 MAX_LOG_RATE = 1e3
@@ -97,7 +97,7 @@ What does all of this give us?
 
 *It gives a way to rank all the loans. The lending strategy is to invest only in top performing loans, where performance is measured by expected returns.*
 
-As a way to validate the strategy, I ranked all loans in the test set by their expected returns, binned them in to top 20 %, 20-40 % and so on, and then compared the results in each bin to actual observed returns.
+As a way to validate the strategy, I ranked all matured loans in the test set by their expected returns, binned them in to top 20 %, 20-40 % and so on, and then compared the results in each bin to actual observed returns.
 
 A good model should show similar trends for observed and expected returns in each category. Let's test the robustness of the strategy.
 
@@ -129,9 +129,9 @@ Once the model parameters have been determined using survival analysis, calculat
 
 ## Future considerations <a id='future'></a>
 I was happy with the performance of the model in that it did give access to top performing loans. Here are some key things which I would like to work on in the future.
-- Performance of loans in peer-to-peer lending is tied to the national economy as a whole. To get a better sense of *future* behaviour of borrowers, more macroeconomic features like unemployment rate, inflation forecasts should be added. 
+- Performance of loans in peer-to-peer lending is tied to the national economy as a whole. To get a better sense of *future* behaviour of borrowers, more macro-economic features like unemployment rate, inflation forecasts could be added. 
 - Geographical location also matters. To get a more accurate prediction, it is worth spending time adding state-wide forecasts in to the models.
-- Cox proportional hazard model assumes time independent co-variates. More advanced models with time dependent co-variates should be considered. 
+- Cox proportional hazard model assumes time independent co-variates. More advanced models with time dependent co-variates could be considered. 
 - Walk forward analysis should be used to stress test the strategy.
 
 
