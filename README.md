@@ -1,8 +1,8 @@
 
 Author: [**Karthik Iyer**](https://iyer-karthik.github.io/)
 ## Motivation
-When I was first looking for a project to work on for Insight, I considered a few variations of stock market prediction using machine 
-learning techniques. What I didn't know that time was that such projects were fairly common and that predicting any sort of price forecast is an exceptionally challenging problem and [not fundamentally feasible](https://www.investopedia.com/terms/e/efficientmarkethypothesis.asp). I wanted to work on a finance related project and someone suggested that I look in [peer-to-peer lending](https://en.wikipedia.org/wiki/Peer-to-peer_lending). I had never heard of it before but after a day of reading, got immediately hooked and decided to work on project related to peer-to-peer lending. The project would be finance related, there were many data science techniques one could use to tackle important problems in that space, the problems clearly stemmed from a business need and finally, it would be fun to work in a completely new field. This checked all boxes that I wanted for a project!
+When I was first looking for a project to work on as part of Insight Data Science fellowship, I considered a few variations of stock market prediction using machine 
+learning techniques. But such projects were fairly common and that predicting any sort of price forecast is an exceptionally challenging problem and [not fundamentally feasible](https://www.investopedia.com/terms/e/efficientmarkethypothesis.asp). I wanted to work on a finance related project and someone suggested that I look in [peer-to-peer lending](https://en.wikipedia.org/wiki/Peer-to-peer_lending).  Such a project would be finance related, one could use myraid machine learning techniques to tackle important problems in that space, the problems clearly stemmed from a business need and finally, it would be fun to dip my toes in a completely new field. This checked all boxes that I wanted for a project! 
 
 ## What is peer-to-peer lending? <a id='motivation'></a>
 
@@ -32,7 +32,7 @@ The project comprised of four parts:
 
 ![LC growth](images/Modified_LC_growth.png)
 
-Previous analyses for Lending Club analyses did not consider loan description. On Lending Club, borrowers give a brief description of loan purpose. Using TextBlob, I extracted the polarity and subjectivity of each loan description, and also looked at the number of words and total number of characters for each loan. Such features could potentially be indicators of future behavior of a borrower and I hence decided to use these features for modeling.
+Previous analyses for Lending Club analyses did not consider loan description. On Lending Club, borrowers give a brief description of loan purpose. Using TextBlob, I extracted the polarity and subjectivity of each loan description, and also looked at the number of words, total number of characters and number of spelling errors in each loan description. Such features could potentially be indicators of future behavior of a borrower and it made sense to use these features for modeling.
 
 **Supervised binary classification**:
 With the aim of improving returns, the first technique I used was a supervised binary classification; predict whether a given loan will default or not. The idea was to improve returns by avoiding bad loans. I used a few parametric and non-parametric classifiers and optimized for recall. 
@@ -41,11 +41,13 @@ Logistic ridge regression had the best performance. Here is the confusion matrix
 
 ![ROCcurve](images/Modified_confusion2.png)
 
-This solved the problem (avoid all loans which are predicted to default and increase returns), but the solution is not too satisfactory. 
+This solved the problem (avoid all loans which are predicted to default and increase returns), but the solution is not too satisfactory. Moreover, such analysis has been done before many times.  
 
 
 **Survival analysis**:
-A disadvantage of classification techniques is that they do not take the timing of default into account. When using survival analysis, we are able to predict when customers are likely to default. When using traditional classification techniques, it is not possible to include the information regarding a current loan as an input in the model. Focusing on the time aspect of default, information such as “borrower X with characteristics Y has at least been repaying for Z months” can be taken into account. I used Cox proportional Hazard Model to predict probability of survival for loans. 
+A disadvantage of classification techniques is that they do not take the timing of default into account. When using survival analysis, we are able to predict when customers are likely to default. Binary classification only predicts *if* a loan will default. But, a defaulted loan can still give positive returns. For instance, a high interest loan defaulting near the end of term will have positive returns as opposed to a high interest loan which defaults at the beginning of the term. Binary classfication bins both of these loans in the same category. 
+
+Moreover, when using traditional classification techniques, it is not possible to include the information regarding a current loan as an input in the model. A better approach is needed. Focusing on the time aspect of default, information such as “borrower X with characteristics Y has at least been repaying for Z months” can be taken into account. I used Cox proportional Hazard Model to predict probability of survival for loans. 
 
 Here is the output for a random loan whose maturity period is 36 months.
 
@@ -105,7 +107,7 @@ Here is a comparison of the average expected return and average observed return 
 
 ![performance](images/Modified_final_expected_return_plot.png)
 
-This strategy performs well on back-test and picks out the top performing loans. Loans that are expected to perform well do perform well and loans that are expected to perform worse do perform worse. 
+This strategy performs well on back-test and picks out the top performing loans. Loans that are expected to perform well do perform well and loans that are expected to perform worse do perform worse. (Note that we consistently over-estimate the returns and this could be improved by a better survival analysis model.)
 
 ## Insights <a id='insights'></a>
 Classification and survival analysis models also output factors most indicative of default. Here are some key insights from my analysis:
@@ -114,7 +116,7 @@ payments.
 - Loan description is a good predictor of loan default, especially description polarity.
 - Loan purpose plays a role in default outcome. Wedding loans have a tendency to be paid off while loans for small businesses have a
 greater tendency to default.
-- Surprisngly, the number of tax liens is inversely associated with default.
+- Surprisingly, the number of tax liens is inversely associated with default.
 
 ## Use case <a id='usecase'></a>
 Once the model parameters have been determined using survival analysis, calculating expected returns is straightforward and can be done in real-time when new investment opportunities arise. An investor looking in to Lending club loans has access to features which go in to the model. Computing the expected returns gives her a way to rank the loans and choose only the top performing loans.
@@ -133,5 +135,6 @@ I was happy with the performance of the model in that it did give access to top 
 - Geographical location also matters. To get a more accurate prediction, it is worth spending time adding state-wide forecasts in to the models.
 - Cox proportional hazard model assumes time independent co-variates. More advanced models with time dependent co-variates could be considered. 
 - Walk forward analysis should be used to stress test the strategy.
+- There is some signal in the way borrowers describe loans. This makes me wonder if lending club platforms could use social media profiles to build a better borrower risk profile. 
 
 
