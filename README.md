@@ -2,7 +2,7 @@
 Author: [**Karthik Iyer**](https://iyer-karthik.github.io/)
 ## Motivation
 When I was first looking for a project to work on as part of Insight Data Science fellowship, I considered a few variations of stock market prediction using machine 
-learning techniques. But such projects were fairly common and predicting any sort of price forecast is an exceptionally challenging problem and [not fundamentally feasible](https://www.investopedia.com/terms/e/efficientmarkethypothesis.asp). I wanted to work on a finance related project and someone suggested that I look in to [peer-to-peer lending](https://en.wikipedia.org/wiki/Peer-to-peer_lending).  Such a project would be finance related and one could use myraid machine learning techniques to tackle important problems in that space. Moreover, the business need is fairly clear and it would be fun to dip my toes in a completely new field. This checked all boxes that I wanted for a project! 
+learning techniques. But such projects were fairly common and predicting any sort of price forecast is an exceptionally challenging problem and [not fundamentally feasible](https://www.investopedia.com/terms/e/efficientmarkethypothesis.asp). I wanted to work on a finance related project and someone suggested I look in to [peer-to-peer lending](https://en.wikipedia.org/wiki/Peer-to-peer_lending).  
 
 ## What is peer-to-peer lending? <a id='motivation'></a>
 
