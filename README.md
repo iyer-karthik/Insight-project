@@ -8,7 +8,7 @@ learning techniques. But such projects were fairly common and predicting any sor
 
 Peer-to-peer lending is a way for individual investors to lend money directly to borrowers. The peer-to-peer lending industry seeks to create a market where investors (individuals or institutions) can buy loans directly from the originator, without the need for a banking intermediary. A low-cost operating model for peer-to-peer lending platforms allows for lower rates for borrowers as well as solid returns for investors. 
 
-Here's how it works. Borrowers enter in a few personal and loan details. The lending platform runs a soft credit check and if the loan is approved, displays an interest rate that the borrower will need to pay. If the borrower accepts this rate, the loan becomes public and is passed on to a pool which investors have access to. Investors can search and browse the loan listings  and select loans that they want to invest in, based on the information supplied about the borrower, amount of loan, interest rate, and loan purpose. Investors make money from interest. The loans are for a fixed duration and borrowers are required to pay monthly installments. 
+Here's how it works: Borrowers enter in a few personal and loan details. The lending platform then runs a soft credit check and if the loan is approved, displays an interest rate that the borrower will need to pay. If the borrower accepts this rate, the loan becomes public and is passed on to a pool which investors have access to. Investors can search and browse the loan listings  and select loans that they want to invest in, based on the information supplied about the borrower, amount of loan, interest rate, and loan purpose. Investors make money from interest. The loans are for a fixed duration and borrowers are required to pay monthly installments. 
 
 ## Context and need <a id='need'></a>
 In spite of the lending platforms' efforts to screen out high risk borrowers, a significant portion of borrowers [default](https://www.finextra.com/newsarticle/30165/high-rate-of-defaults-hit-p2p-lending-sector), and this hurts investors' returns. Moreover, loans on lending platforms are not collateralized and default risk directly impacts an investor's returns.  Given all this, how can we improve returns for investors?
@@ -17,7 +17,7 @@ In spite of the lending platforms' efforts to screen out high risk borrowers, a 
 I looked at loan data from [Lending Club](https://www.lendingclub.com/info/download-data.action), one of the biggest online lending latforms in the United States. The dataset I used for training my models had over 300000 rows (loans) and each row contained information about a loan (purpose, amount, interest rate, credit history of the borrower) and all completed loans contain information about the status of the loan (Paid off or Defaulted). The goal of my project was to improve returns for Lending club investors. 
 
 ## Overview <a id='overview'></a>
-One way to improve returns is by reliably predicting loan default. I approached the problem of prediciting loan default in two ways. One was to look at it as a supervised classfication problem that predicts whether a given loan will default. The aim here was to filter 
+One way to improve returns is by reliably predicting loan default. I tackled the problem of prediciting loan default in two ways. One was to look at it as a supervised classfication problem that predicts whether a given loan will default. The aim here was to filter 
 out as many bad loans as possible. With that in mind, I used a few parameteric and non-parametric classfiers and optimized for *recall*. 
 
 This binary approach does not bode particularly well for maximizing returns (and moreover, such analysis has been done before for Lending Club's data.) For example, a high interest loan defaulting near the end of the term and a low interest loan defaulting near the beginning of the term will have different returns, and will be binned in the same category by the binary classifer. A more satisfactory approach is to predict the *time* to default. This was done using survival analysis techniques.  
@@ -37,7 +37,7 @@ Previous analyses for Lending Club analyses did not consider loan description. O
 **Supervised binary classification**:
 With the aim of improving returns, the first technique I used was a supervised binary classification; predict whether a given loan will default or not. The idea was to improve returns by avoiding bad loans. I used a few parametric and non-parametric classifiers and optimized for recall. 
 
-Logistic ridge regression had the best performance. Here is the confusion matrix for Logistic regression with L2 penalty.
+Logistic ridge regression had the best performance. Here is the confusion matrix on the holdout test set for Logistic regression with L2 penalty.
 
 ![ROCcurve](images/Modified_confusion2.png)
 
@@ -123,14 +123,14 @@ Once the model parameters have been determined using survival analysis, calculat
 
 
 ## Summary <a id='summary'></a>
- Here is a summary of work accomplished over the last 3 weeks:
+ Here is a summary of work accomplished over a period of 3 weeks that I worked on this project:
 - Deployed a R Shiny dashboard visualizing the historical trends in Lending Club loan data
 - Used classfication techniques to predict whether a loan will default
 - Used survival analysis techniques to predict time to default and constructed an investment strategy off that
 - Provided actionable insights for optimal loan selection
 
 ## Future considerations <a id='future'></a>
-I was happy with the performance of the model in that it did give access to top performing loans. Here are some key things which I would like to work on in the future.
+I was happy with the performance of the model in that it did give access to top performing loans. Here are some key things which I would like to improve.
 - Performance of loans in peer-to-peer lending is tied to the national economy as a whole. To get a better sense of *future* behaviour of borrowers, more macro-economic features like unemployment rate, inflation forecasts could be added. 
 - Geographical location also matters. To get a more accurate prediction it is worth spending time adding state-wide forecasts in to the models.
 - Cox proportional hazard model assumes time independent co-variates. More advanced models with time dependent co-variates could be considered. 
